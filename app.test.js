@@ -1,8 +1,6 @@
 const request = require('supertest')
 const app = require('./app')
 
-console.log(request)
-
 describe('Todos API', () => {
     it('GET /todos --> array of todos', () => { 
         return request(app)
@@ -13,6 +11,7 @@ describe('Todos API', () => {
             expect(response.body).toEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
+                        id: expect.any(Number),
                         name: expect.any(String),
                         completed: expect.any(Boolean)
                     })
@@ -21,7 +20,7 @@ describe('Todos API', () => {
         })
     })
     it('GET /todos --> should validate req body', () => { 
-        //nothing here 
+        //nothing here - passing 
     })
 
     it('GET /todos/id --> return specific todo if id exists', () => { 
@@ -32,6 +31,7 @@ describe('Todos API', () => {
         .then((response)=> {
             expect(response.body).toEqual(
                     expect.objectContaining({
+                        id: expect.any(Number),
                         name: expect.any(String),
                         completed: expect.any(Boolean)
                     })
@@ -55,6 +55,7 @@ describe('Todos API', () => {
         .then((response)=> {
             expect(response.body).toEqual(
                 expect.objectContaining({
+                    id: expect.any(Number),
                     name: 'do dishes',
                     completed: false
                 })
