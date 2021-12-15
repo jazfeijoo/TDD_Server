@@ -19,9 +19,6 @@ describe('Todos API', () => {
             )
         })
     })
-    it('GET /todos --> should validate req body', () => { 
-        //nothing here - passing 
-    })
 
     it('GET /todos/id --> return specific todo if id exists', () => { 
         return request(app)
@@ -44,7 +41,7 @@ describe('Todos API', () => {
         .expect(404)
     })
 
-    it('POST /todos --> create todo', () => { 
+    it('POST /todos --> should create and return new todo', () => { 
         return request(app)
         .post('/todos')
         .send({
@@ -61,6 +58,15 @@ describe('Todos API', () => {
                 })
         )
         })
+    })
+
+    it('POST /todos --> should validate req body (DATA TYPE)', () => { 
+        return request(app)
+        .post('/todos')
+        .send({
+            name: 12345
+        })
+        .expect(422)
     })
     
 

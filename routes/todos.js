@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 //WORKING WITH JSON DATA FILE:
 const fs = require('fs');
-const data = fs.readFile('data.json')
+const data = fs.readFileSync('data.json')
 const todos = JSON.parse(data)
 
 const createError = require('http-errors')
@@ -20,21 +20,23 @@ router.get('/:id', function(req, res, next) {
     res.json(foundTodo)
 });
 
-router.post('/todos', function (req, res, next){
+// console.log('TODOS json parsed:', todos)
+
+router.post('/', function (req, res, next){
     const { body } = req
-    const newTodo = {
-        id: todos.length + 1,
-        name: String(req.body.name),
-        completed: false
+
+    if (typeof body.name !== 'string'){
+        return next(createError(422,'Validation error. Name should be a string'))
     }
 
-    async () => {
-        // const file = await fs.readFile('data.json')
-        todos.push(newTodo)
-        await fs.writeFile('data.json', JSON.stringify(todos, null, 4))
+    const newTodo = {
+        id: todos.length + 1,
+        name: String(body.name),
+        completed: false
     }
-    
-    res.status(201).json(newTodo)
+    todos.push(newTodo)
+   // console.log('BODY:', body, 'todos after: ', todos)  
+    res.status(201).json(todos[todos.length-1])
 })
 
 module.exports = router;
